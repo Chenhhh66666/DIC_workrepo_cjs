@@ -2,11 +2,11 @@
 
 module txd_clk_tb;
 
-reg         clk;        // 输入时钟
-reg         rst_n;      // 异步复位信号
-reg         tx_done;    // 发送完成信号
-reg         tx_start;   // 发送开始信号
-wire        bps_clk;    // 产生的波特率时钟
+logic        clk;        // 输入时钟
+logic        rst_n;      // 异步复位信号
+logic        tx_done;    // 发送完成信号
+logic        tx_start;   // 发送开始信号
+logic        bps_clk;    // 产生的波特率时钟
 
 // 时钟生成
 initial begin

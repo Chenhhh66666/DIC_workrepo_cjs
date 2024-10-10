@@ -2,12 +2,12 @@
 
 module txd_tb;
 
-reg				clk			;
-reg				rst_n		;
-reg				frame_en	;
-reg	[5:0]		data_frame	;
-wire			tx_done		;
-wire			uart_tx		;
+logic 			clk			;
+logic 			rst_n		;
+logic 			frame_en	;
+logic [5:0]		data_frame	;
+logic 			tx_done		;
+logic 			uart_tx		;
 
 initial begin
 	clk = 1;
