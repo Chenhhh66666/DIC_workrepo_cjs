@@ -3,20 +3,17 @@
 module single_port_ram (
     input  logic                clka,
     input  logic                ena,
-    input  logic                wea,    //å†™ä½¿èƒ½
-    // input  logic                ra,     //è¯»ä½¿èƒ½
-    input  logic [ `ADDR-1 : 0] addra,
+    input  logic                wea,    //Ğ´Ê¹ÄÜ
+    // input  logic                ra,     //¶ÁÊ¹ÄÜ
+    input  logic [      11 : 0] addra,
     input  logic [`WIDTH-1 : 0] dina,
     output logic [`WIDTH-1 : 0] douta
 );
-
-
-    //å®ç°å½¢å¼ block distributed
-
-    (* ram_style="distributed"*) logic [`WIDTH-1 : 0] RAM_DATA[0 : `DEPTH-1];  //RAMä¸­å­˜çš„æ•°æ®
+    //ÊµÏÖĞÎÊ½ 
+    (* ram_style=`RAM_STYLE*) logic [`WIDTH-1 : 0] RAM_DATA[0 : `DEPTH-1];  //RAMÖĞ´æµÄÊı¾İ
 
     initial begin
-        $readmemb("dds_init.txt", RAM_DATA, 0, 3071);  ///åˆå§‹åŒ–æ³¢å½¢æ•°æ®
+        $readmemb("dds_init.txt", RAM_DATA, 0, 3071);  ///³õÊ¼»¯²¨ĞÎÊı¾İ
     end
 
     always_ff @(posedge clka) begin

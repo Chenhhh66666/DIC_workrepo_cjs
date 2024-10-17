@@ -1,7 +1,7 @@
-`define DEPTH 3072 //Éî¶È
-`define ADDR 12  //¶ÔÓ¦Î»¿íµØÖ·ÊäÈë
-`define WIDTH 32  //Êý¾ÝÎ»¿í
-`define CLASH "WRITEFIRST"  //³åÍ»Ä£Ê½¡£NOCHANEG,READ,WRITE
-`define CLASHB "READFIRST"  //³åÍ»Ä£Ê½¡£NOCHANEG,READ,WRITE
+`define DEPTH 3072 //ï¿½ï¿½ï¿½
+`define ADDR 10  //ï¿½ï¿½Ó¦Î»ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½
+`define WIDTH 32  //ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+`define CLASH "WRITEFIRST"  //ï¿½ï¿½Í»Ä£Ê½ï¿½ï¿½NOCHANEG,READ,WRITE
+`define CLASHB "READFIRST"  //ï¿½ï¿½Í»Ä£Ê½ï¿½ï¿½NOCHANEG,READ,WRITE
 `define RAM_STYLE "block"
-//`define WAVETYPE "TRI"  //TRIÈý½Ç²¨ SINÕýÏÒ²¨ SQU·½²¨
+//`define WAVETYPE "TRI"  //TRIï¿½ï¿½ï¿½Ç²ï¿½ SINï¿½ï¿½ï¿½Ò²ï¿½ SQUï¿½ï¿½ï¿½ï¿½
