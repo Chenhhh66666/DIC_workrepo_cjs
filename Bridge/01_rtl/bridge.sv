@@ -40,35 +40,14 @@ module bridge (
     assign data_recv    = ready & valid;
     assign wr_en        = data_recv;
     assign fifo_data_in = data_recv ? data_in : 'd0;  // 数据推到fifo，防止持续写入
-    // typedef enum logic {
-    //     RECV_IDLE = 1'b0,
-    //     RECV_RECV = 1'b1
-    // } state_recv;
-    // state_recv c_recv_state, n_recv_state;
-    // // 次态定义
-    // always_comb begin : get_next_state
-    //     case (c_recv_state)
-    //         RECV_IDLE: n_recv_state = valid ? RECV_RECV : RECV_IDLE;
-    //         RECV_RECV: n_recv_state = RECV_IDLE;
-    //         default:   n_recv_state = RECV_IDLE;
-    //     endcase
-    // end
-    // // 状态转移
-    // always_ff @(posedge clk or negedge rst) begin : change_state
-    //     if (!rst) c_recv_state <= RECV_IDLE;
-    //     else c_recv_state <= n_recv_state;
-    // end
 
     //***************发送receiver信号部分***************
-
-    logic start_data;  //1则挂载数据在线上
-    assign rd_en    = !empty & ack & req;
-    assign data_out = req ? fifo_data_out : 'd0;
+    assign data_out = (req & ack) ? fifo_data_out : 'd0;
 
     typedef enum logic [1:0] {
         IDLE = 2'b00,  //req=0,ack=0
-        // REQON = 2'b01,  //req=1,ack=0
-        REQDOWN = 2'b10,  //req=1,ack=1
+        READFIFO = 2'b01,  //读数据
+        REQON = 2'b10,  //req=1,ack=1
         STOP = 2'b11  //req=0,ack=0
     } state_send;
     state_send c_send_state, n_send_state;
@@ -76,47 +55,37 @@ module bridge (
     always_ff @(posedge clk or negedge rst) begin : send_data
         if (!rst) begin
             c_send_state <= IDLE;
+            // n_send_state <= IDLE;
         end else begin
             c_send_state <= n_send_state;
         end
     end
-    // 次态定义
-    // always_comb begin
-    //     case (c_send_state)
-    //         IDLE:    n_send_state = ack ? ACKON : IDLE;
-    //         ACKON:   n_send_state = ACKDOWN;
-    //         ACKDOWN: n_send_state = STOP;
-    //         STOP:    n_send_state = IDLE;
-    //         default: n_send_state = ACKDOWN;
-    //     endcase
-    // end
-    // 输出
     always_comb begin
         case (c_send_state)
             IDLE: begin
-                n_send_state = ack ? REQDOWN : IDLE;
-                req          = empty ? 1'b0 : 1'b1;
-                start_data   = 1'b1;
-            end
-            // REQON: begin
-            //     n_send_state = ACKDOWN;
-            //     req          = 1'b0;
-            //     start_data   = 1'b0;
-            // end
-            REQDOWN: begin
-                n_send_state = STOP;
+                n_send_state = empty ? IDLE :READFIFO;
+                rd_en        = 1'b0;
                 req          = 1'b0;
-                start_data   = 1'b0;
+            end
+            READFIFO: begin
+                n_send_state = empty ? IDLE : REQON;
+                rd_en        = empty ? 1'b0 : 1'b1;
+                req          = 1'b0;
+            end
+            REQON: begin
+                n_send_state = ack ? STOP : REQON;
+                rd_en        = 1'b0;
+                req          = 1'b1;
             end
             STOP: begin
-                n_send_state = IDLE;
+                n_send_state = READFIFO;
+                rd_en        = 1'b0;
                 req          = 1'b0;
-                start_data   = 1'b0;
             end
             default: begin
-                n_send_state = REQDOWN;
+                n_send_state = IDLE;
+                rd_en        = 1'b0;
                 req          = 1'b0;
-                start_data   = 1'b0;
             end
         endcase
     end

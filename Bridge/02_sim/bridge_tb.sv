@@ -67,7 +67,7 @@ module bridge_tb;
     task automatic sender_senddata();
         @(posedge clk);
         sender_en <= 1'b1;
-        // @(posedge clk);
+        @(posedge clk);
         // sender_en <= 1'b0;
         // @(posedge clk);
         // @(posedge clk);
@@ -77,9 +77,9 @@ module bridge_tb;
         @(posedge clk);
         receive_en <= 1'b1;
         @(posedge clk);
-        receive_en <= 1'b0;
-        @(posedge clk);
-        @(posedge clk);
+        // receive_en <= 1'b0;
+        // @(posedge clk);
+        // @(posedge clk);
     endtask
 
     initial begin
@@ -101,8 +101,8 @@ module bridge_tb;
         sender_senddata();
         receive_data(); 
         // receive_data(); 
-        #200;
-        $finish();
+        #1000;
+        // $finish();
     end
 
 endmodule
