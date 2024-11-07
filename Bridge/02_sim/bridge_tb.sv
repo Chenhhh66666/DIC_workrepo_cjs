@@ -67,10 +67,10 @@ module bridge_tb;
     task automatic sender_senddata();
         @(posedge clk);
         sender_en <= 1'b1;
-        @(posedge clk);
-        sender_en <= 1'b0;
-        @(posedge clk);
-        @(posedge clk);
+        // @(posedge clk);
+        // sender_en <= 1'b0;
+        // @(posedge clk);
+        // @(posedge clk);
     endtask  //automatic
 
     task automatic receive_data();
